@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
+import org.springframework.kafka.support.mapping.DefaultJackson2JavaTypeMapper;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
@@ -37,6 +38,8 @@ public class KafkaConfig {
 
     public ConsumerFactory<String, ShopDTO> consumerFactory() {
         JsonDeserializer<ShopDTO> deserializer = new JsonDeserializer<>(ShopDTO.class);
+        deserializer.setTypeMapper(new DefaultJackson2JavaTypeMapper());
+        deserializer.setUseTypeMapperForKey(true);
 
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
